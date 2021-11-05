@@ -7,7 +7,7 @@ A sample BramblJS application that uses all of the APIs which can be used for do
 ### Local Installation
 * To start local development, first clone this repository and install the local dependencies
 ```
-git@github.com:DJunge-w/STAT-487-687_BramblJS_Application.git
+git clone git@github.com:DJunge-w/STAT-487-687_BramblJS_Application.git
 cd STAT-487-687_BramblJS_Application.git
 npm install
 ```
