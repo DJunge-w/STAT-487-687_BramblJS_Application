@@ -24,9 +24,10 @@ module.exports = (brambl) => {
     },
     generateAssetCode: async (name) => brambl.createAssetCode(name),
 
-    mint: async (recipient, name, quantity, securityRoot, metadata) => {
+    mint: async (recipient, name, quantity, temp, securityRoot, metadata) => {
       const _securityRoot = securityRoot || "11111111111111111111111111111111";
-      const _metadata = metadata || `minted - ${new Date()}`;
+      var _metadata = metadata || `minted - ${new Date()}`;
+      _metadata = _metadata + "-" + (temp) + "-" + (new Date()).toString();
       const params = {
         propositionType: "PublicKeyCurve25519",
         recipients: [[recipient, quantity, _securityRoot, _metadata]],

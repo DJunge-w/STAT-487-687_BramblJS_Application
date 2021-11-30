@@ -93,14 +93,15 @@ app.get("/assetcode/:name", async (req, res, next) => {
   res.send(JSON.stringify(result, null,4));
 });
 
-app.get("/mint/:addr/:name/:quantity", async (req, res, next) => {
+app.get("/mint/:addr/:name/:quantity/:temp", async (req, res, next) => {
   const result = await services
     .mint(
       req.params.addr,
       req.params.name,
       req.params.quantity,
+      req.params.temp,
       req.query.securityRoot,
-      req.query.metadata
+      req.query.metadata,
     )
     .catch((err) => `Something went wrong: ${JSON.stringify(err)}`);
   res.header("Content-Type",'application/json');
