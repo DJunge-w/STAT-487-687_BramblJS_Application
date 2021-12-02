@@ -22,6 +22,10 @@ module.exports = (brambl) => {
         .map(obj => parseInt(obj.value.quantity, 10))
         .reduce((prev, curr) => prev + curr);
     },
+    getAssetTotalArray: (balance_promise, assetCode, address) => {
+      return balance_promise[address].Boxes.AssetBox.filter(obj => obj.value.assetCode === assetCode)
+        .map(obj => parseInt(obj.value.quantity, 10));
+    },
     generateAssetCode: async (name) => brambl.createAssetCode(name),
 
     mint: async (recipient, name, quantity, temp, securityRoot, metadata) => {

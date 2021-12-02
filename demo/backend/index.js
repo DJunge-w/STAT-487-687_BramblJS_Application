@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors');
 const BramblJS = require("brambljs");
 const Services = require("./services");
 const CONFIG = require('@stat687/config');
@@ -30,6 +31,7 @@ const brambl = new BramblJS({
 
 const services = Services(brambl);
 const app = express();
+app.use(cors())
 
 // app.set('json spaces', 2);
 
@@ -70,10 +72,12 @@ app.get("/assettotal/:name", async (req, res, next) => {
     .then((res) => res.result)
     .catch((err) => `Something went wrong: ${err.message}`);
   const total = services.getAssetTotal(balance_str, assetCode, brambl.keyManager.address);
+  const totalArray = services.getAssetTotalArray(balance_str,assetCode, brambl.keyManager.address);
   console.log(total);
+  console.log(totalArray);
   // services.getAssetTotal(balance_str, assetCode, brambl.keyManager.address);
   res.header("Content-Type",'application/json');
-  res.send(JSON.stringify(balance_str, null,4));
+  res.send(JSON.stringify(total, null,4));
 });
 
 app.get("/balance/:addr", async (req, res, next) => {
@@ -104,11 +108,16 @@ app.get("/mint/:addr/:name/:quantity/:temp", async (req, res, next) => {
       req.query.metadata,
     )
     .catch((err) => `Something went wrong: ${JSON.stringify(err)}`);
+  var response = {
+    quantity: req.params.quantity,
+    temperature: req.params.temp
+  }
   res.header("Content-Type",'application/json');
-  res.send(JSON.stringify(result, null,4));
+  res.send(JSON.stringify(response, null,4));
 });
 
 app.get("/transfer/:addr/:assetcode/:quantity", async (req, res, next) => {
+  let txId = "";
   const result = await services
     .transfer(
       req.params.addr,
@@ -118,8 +127,13 @@ app.get("/transfer/:addr/:assetcode/:quantity", async (req, res, next) => {
       req.query.metadata
     )
     .catch((err) => `Something went wrong: ${JSON.stringify(err)}`);
+  txId = result.result.txId;
+  console.log(txId);
+  let back = {
+    txId: txId
+  }
   res.header("Content-Type",'application/json');
-  res.send(JSON.stringify(result, null,4));
+  res.send(JSON.stringify(back, null,4));
 });
 
 /** create a server object */
